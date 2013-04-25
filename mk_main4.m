@@ -11,12 +11,12 @@
 addpath(genpath('C:\zxk\toolbox'));
 
 % fileName="";
-inputFileDir1='C:\zxk\Dropbox\monkey\cam1_320x240_jpg';
+inputFileDir1='C:\zxk\Research\monkeyData\Camera1_extractedVideos\_extracted_100';
 inputFileDir2='C:\zxk\Dropbox\monkey\cam2_320x240_jpg';
 inputFileDir3='C:\zxk\Dropbox\monkey\cam3_320x240_jpg';
 inputFileDir4='C:\zxk\Dropbox\monkey\cam4_320x240_jpg';
 inputFileDir=inputFileDir1;
-inputFileType='.jpg'; % TODO: modify file type name
+inputFileType='.png'; % TODO: modify file type name
 outputFileDir='';
 
 % if ~isempty(inputFileDir)
@@ -39,8 +39,8 @@ outputFileDir='';
 % load ('./data/xcyc_cleaned');
 
 % numframes = length(files);
-firstFrame = 100000;
-lastFrame = 100010;
+firstFrame = 121668;
+lastFrame = 122068;
 % firstFrame = 34700;
 % lastFrame = 34950;
 
@@ -52,22 +52,24 @@ for frameNo=firstFrame:lastFrame
         currFrame=imread([inputFileDir '\' inputFileName]);
     end    
     % initialization
-    if frameNo==firstFrame
+%     if frameNo==firstFrame
         %         frameInit();
-        load './data/bg_img1';
-        mk=MK(currFrame,bg_img1,frameNo);
+%         load './data/bg_img1';
+%         mk=MK(currFrame,bg_img1,frameNo);
 %         bb_saved=cell(lastFrame-firstFrame,1);
 %         ind=zeros(lastFrame-firstFrame,1);
 
-        continue;
-    end
+%         continue;
+%     end
     % process frames
-    mk=mk.frameProcess(currFrame);    
+%     mk=mk.frameProcess(currFrame);    
 %     bb_saved{frameNo-firstFrame}=mk.bb;
 
 
     % Display frames
-    mk.disp();
+%     mk.disp();
+
+figure(1);imshow(currFrame);delay(1);
     
 %     hold on;
 %     if ind(frameNo-firstFrame)~=0
