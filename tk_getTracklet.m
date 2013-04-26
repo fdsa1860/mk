@@ -1,12 +1,15 @@
 
-function trklt = mk_getTracklet
+function [trklt indexMat] = tk_getTracklet(fileName)
 % Created by Xikang Zhang, 04/24/2013
 % generate tracklets from detection bounding boxes (data association)
 
+if nargin==0    
+    inputFileDir='C:\zxk\Research\monkeyData\Camera1_extractedVideos\_extracted_100';
+    fileName = [inputFileDir '\' 'detection.txt'];
+end
 
-inputFileDir='C:\zxk\Research\monkeyData\Camera1_extractedVideos\_extracted_100';
 % Load annotation from disk (in .txt format):
-fid = fopen([inputFileDir '\' 'detection.txt']);
+fid = fopen(fileName);
 A = fscanf(fid,'%f',[5 inf]);
 fclose(fid);
 dbb = A';
@@ -16,23 +19,14 @@ dbb(:,1) = dbb(:,1)+1; % c++ frame number start at 0
 thres = 0.5;
 trklt = Tracklet.empty();
 nTracklet = 0;
-
+nFrames = dbb(end,1)-dbb(1,1)+1;
+indexMat = zeros(0,nFrames);
 
 firstFrame = dbb(1,1);
 lastFrame = dbb(end,1);
-for frameNo=firstFrame:lastFrame
-    
-    fprintf('Processing Frame %d ...\n',frameNo);
-    
+for frameNo=firstFrame:lastFrame    
+    fprintf('Processing Frame %d ...\n',frameNo);    
     currbb = dbb(dbb(:,1)==frameNo,2:5);
-    if frameNo==firstFrame
-        for i=1:size(currbb,1)
-            nTracklet = nTracklet + 1;
-            trklt(nTracklet) = Tracklet(frameNo, currbb(i,:));
-        end
-        continue;
-    end
-    
     for i=1:size(currbb,1)
         isMatched = false;
         for j=1:nTracklet
@@ -40,20 +34,20 @@ for frameNo=firstFrame:lastFrame
                 continue;
             end
             if isOverlapped(trklt(j).node(end).bb, currbb(i,:),thres)
-                trklt(j) = trklt(j).add( frameNo, currbb(i,:) );
+                trklt(j) = trklt(j).add( frameNo, currbb(i,:), rand(3,1) );
                 isMatched = true;
+                indexMat(j,frameNo) = 1;
                 break;
             end
         end
         if ~isMatched %if not matched to any tracklet, create a new one
             nTracklet = nTracklet + 1;
-            trklt(nTracklet) = Tracklet(frameNo, currbb(i,:));
+            trklt(nTracklet) = Tracklet(frameNo, currbb(i,:),rand(3,1) );
+            indexMat = [indexMat; zeros(1,nFrames)];
+            indexMat(end,frameNo) = 1;
         end
-    end
-    
-end
-    
-    
+    end    
+end 
 
 end
 
