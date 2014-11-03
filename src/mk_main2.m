@@ -10,12 +10,12 @@
 % load vbb labels and display
 % enable to use RSPCA for smoothing
 
-addpath(genpath('C:\zxk\toolbox'));
-addpath(genpath('C:\zxk\Research\code3.0.0'));
-addpath(genpath('.\SRPCA_clean'));
+% addpath(genpath('C:\zxk\toolbox'));
+addpath(genpath(fullfile('..','3rdParty')));
+% addpath(genpath('.\SRPCA_clean'));
 
 % fileName="";
-inputFileDir1='C:\zxk\Research\monkeyData\video20121011_cam1_extracted\_extracted_009';
+inputFileDir1=fullfile('~','research','data','monkey','cam1-127389','cam1-127389');
 inputFileDir2='.\cam2_320x240_jpg';
 inputFileDir3='.\cam3_320x240_jpg';
 inputFileDir4='C:\zxk\Research\monkeyData\Camera4_extractedVideos\_extracted_100';
@@ -24,7 +24,7 @@ inputFileType='.png'; % modify file type name if necessary
 outputFileDir='';
 
 % Load annotation from disk (in .txt format):
-A = vbb('vbbLoadTxt', [inputFileDir '\' '_extracted_009.vbb'] );
+A = vbb('vbbLoadTxt', fullfile(inputFileDir, 'cam1-127389.vbb') );
 nMonkeys = length(A.objLbl);
 traj(1:nMonkeys) = struct('bb',[],'fr',[]);
 % brightness = [];
@@ -38,14 +38,17 @@ traj(1:nMonkeys) = struct('bb',[],'fr',[]);
 % lastFrame = 109000;
 % firstFrame = 121668;
 % lastFrame = 122068;
-firstFrame = 322799;
-lastFrame = 324337;
+% firstFrame = 322799;
+% lastFrame = 324337;
+firstFrame = 127389;
+lastFrame = 127488;
 count = 0;
 for frameNo=firstFrame:lastFrame
     % read input frame
     inputFileName=['cam1-' num2str(frameNo) inputFileType];
-    if exist([inputFileDir '\' inputFileName],'file')
-        currFrame=imread([inputFileDir '\' inputFileName]);
+    inputFile = fullfile(inputFileDir, inputFileName);
+    if exist(inputFile,'file')
+        currFrame=imread(inputFile);
     end
     
     % initialization

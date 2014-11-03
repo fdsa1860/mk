@@ -1,17 +1,18 @@
 % display vbb data
 
-Wmonkey = convertVbbData;
+% Wmonkey = convertVbbData;
 
-inputFileDir1='.\cam1_320x240_jpg';
-inputFileType='.jpg'; 
+inputFileDir1=fullfile('~','research','data','monkey','cam1-127388','cam1-127389');
+inputFileType='.png'; 
 
-firstFrame = 122500;
-lastFrame = 123000;
+firstFrame = 127389;
+lastFrame = 127488;
 
 for frameNo=firstFrame:lastFrame
-    inputFileName=['Temp1-' num2str(frameNo) inputFileType];
-    if exist([inputFileDir1 '\' inputFileName],'file')
-        currFrame=imread([inputFileDir1 '\' inputFileName]);
+    inputFileName=['cam1-' num2str(frameNo) inputFileType];
+    inputFile = fullfile(inputFileDir1, inputFileName);
+    if exist(inputFile,'file')
+        currFrame=imread(inputFile);
     end
     % read input frame
     figure(1);
