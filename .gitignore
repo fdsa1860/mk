@@ -3,4 +3,4 @@
 *.log
 data/
 .DS_Store
-*.~
+*~
